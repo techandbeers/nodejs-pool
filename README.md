@@ -5,6 +5,7 @@ The nodejs-pool is built around a small series of core daemons that share access
 api - Main API for the frontend to use and pull data from.  Expects to be hosted at  /
 remoteShare - Main API for consuming shares from remote/local pools.  Expects to be hosted at /leafApi
 pool - Where the miners connect to.
+pool_stats - Provides pool metrics.
 longRunner - Database share cleanup.
 payments - Handles all payments to workers.
 blockManager - Unlocks blocks and distributes payments into MySQL
@@ -13,12 +14,12 @@ worker - Does regular processing of statistics and sends status e-mails for non-
 API listens on port 8001, remoteShare listens on 8000
 
 moneroocean.stream (The reference implementation) uses the following setup:  
-* https://moneroocean.stream is hosted on its own server, as the main website is a static frontend
-* https://api.moneroocean.stream hosts api, remoteShare, longRunner, payments, blockManager, worker, as these must all be hosted with access to the same LMDB database.
+* https://moneromine.co is hosted on its own server, as the main website is a static frontend
+* https://api.moneromine.co hosts api, remoteShare, longRunner, pool_stats, payments, blockManager, worker, as these must all be hosted with access to the same LMDB database.
 
 Sample Caddyfile for API:
 ```text
-https://api.moneroocean.stream {
+https://api.moneromine.co {
     proxy /leafApi 127.0.0.1:8000
     proxy / 127.0.0.1:8001
     cors
@@ -37,7 +38,6 @@ Server Requirements
 * 4 Gb Ram
 * 2 CPU Cores (with AES_NI)
 * 150 Gb SSD-Backed Storage - If you're doing a multi-server install, the leaf nodes do not need this much storage.  They just need enough storage to hold the blockchain for your node.  The pool comes configured to use up to 60Gb of storage for LMDB.  Assuming you have the longRunner worker running, it should never get near this size, but be aware that it /can/ bloat readily if things error, so be ready for this!
-* Notably, this happens to be approximately the size of a 4Gb linode instance, which is where the majority of automated deployment testing happened!
 
 Pre-Deploy
 ----------
@@ -50,7 +50,7 @@ Deployment via Installer
 ------------------------
 
 1. Add your user to `/etc/sudoers`, this must be done so the script can sudo up and do it's job.  We suggest passwordless sudo.  Suggested line: `<USER> ALL=(ALL) NOPASSWD:ALL`.  Our sample builds use: `pooldaemon ALL=(ALL) NOPASSWD:ALL`
-2. Run the [deploy script](https://raw.githubusercontent.com/MoneroOcean/nodejs-pool/master/deployment/deploy.bash) as a **NON-ROOT USER**.  This is very important!  This script will install the pool to whatever user it's running under!  Also.  Go get a coffee, this sucker bootstraps the monero installation.
+2. Run the [deploy script](https://raw.githubusercontent.com/techandbeers/nodejs-pool/master/deployment/deploy.bash) as a **NON-ROOT USER**.  This is very important!  This script will install the pool to whatever user it's running under!  Also.  Go get a coffee, this sucker bootstraps the monero installation.
 3. Once it's complete, change as `config.json` appropriate.  It is pre-loaded for a local install of everything, running on 127.0.0.1.  This will work perfectly fine if you're using a single node setup.  You'll also want to set `bind_ip` to the external IP of the pool server, and `hostname` to the resolvable hostname for the pool server. `pool_id` is mostly used for multi-server installations to provide unique identifiers in the backend. You will also want to run: source ~/.bashrc  This will activate NVM and get things working for the following pm2 steps.
 4. You'll need to change the API endpoint for the frontend code in the `poolui/build/globals.js` and `poolui/build/globals.default.js` -- This will usually be `http(s)://<your server FQDN>/api` unless you tweak caddy!
 5. The default database directory `/home/<username>/pool_db/` is already been created during startup. If you change the `db_storage_path` just make sure your user has write permissions for new path. Run: `pm2 restart api` to reload the API for usage.  
@@ -73,7 +73,7 @@ pm2 restart api
 
 Install Script:
 ```bash
-curl -L https://raw.githubusercontent.com/MoneroOcean/nodejs-pool/master/deployment/deploy.bash | bash
+curl -L https://raw.githubusercontent.com/techandbeers/nodejs-pool/master/deployment/deploy.bash | bash
 ```
 
 Assumptions for the installer
@@ -141,7 +141,7 @@ UPDATE pool.users SET email='your new password here' WHERE username='Administrat
 ```
 The email field is used as the default password field until the password is changed, at which point, it's hashed and dumped into the password field instead, and using the email field as a password is disabled.
 
-You should take a look at the [wiki](https://github.com/MoneroOcean/nodejs-pool/wiki/Configuration-Details) for specific configuration settings in the system.
+You should take a look at the [wiki](https://github.com/techandbeers/nodejs-pool/wiki/Configuration-Details) for specific configuration settings in the system.
 
 Pool Update Procedures
 ======================
@@ -287,6 +287,8 @@ If you'd like to make a one time donation, the addresses are as follows:
 
 Credits
 =======
+
+[MoneroOcean](https://github.com/moneroocean) - Continued development of Snipa's work.
 
 [Zone117x](https://github.com/zone117x) - Original [node-cryptonote-pool](https://github.com/zone117x/node-cryptonote-pool) from which, the stratum implementation has been borrowed.
 
