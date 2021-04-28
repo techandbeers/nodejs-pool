@@ -203,8 +203,10 @@ INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES 
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'banPercent', '25', 'int', 'Percentage of shares that need to be invalid to be banned.');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'banThreshold', '30', 'int', 'Number of shares before bans can begin');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'trustedMiners', 'true', 'bool', 'Enable the miner trust system');
-INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'minerThrottleSharePerSec', '5', 'bool', 'Number of shares per second (per thread) after pool will throttle shares');
-INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'minerThrottleShareWindow', '5', 'bool', 'Length of share throttle window in seconds');
+INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'minerThrottleSharePerSec', '5', 'int', 'Number of shares per second (per thread) after pool will throttle shares');
+INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'minerThrottleShareWindow', '5', 'int', 'Length of share throttle window in seconds');
+INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'workerMax', '1000', 'int', 'Max number of worker connection before pool starts to issue bans');
+INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'shareAccTime', '60', 'int', 'Length of time shares are accumulated in seconds');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'trustChange', '1', 'int', 'Change in the miner trust in percent');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'trustMin', '20', 'int', 'Minimum level of miner trust');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'trustPenalty', '30', 'int', 'Number of shares that must be successful to be trusted, reset to this value if trust share is broken');
@@ -213,6 +215,7 @@ INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES 
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('daemon', 'port', '18081', 'int', 'Monero Daemon RPC Port');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('daemon', 'basicAuth', '', 'string', 'Basic auth header if needed by daemon');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('daemon', 'X-API-KEY', '', 'string', 'Turtle wallet API auth header');
+INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('daemon', 'pollInterval', '100', 'int', 'Time in ms between pool daemon checks for new blocks');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('daemon', 'coinHashFactorRYO',  '0', 'float', 'Ryo algo hash price factor relative to coinHashFactor');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('daemon', 'coinHashFactorSUMO',  '0', 'float', 'SUMO algo hash price factor relative to coinHashFactor');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('daemon', 'coinHashFactorLOKI', '0', 'float', 'Loki algo hash price factor relative to coinHashFactor');
@@ -242,8 +245,8 @@ INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES 
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('wallet', 'address', '127.0.0.1', 'string', 'Monero Daemon RPC Wallet IP');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('wallet', 'port', '18082', 'int', 'Monero Daemon RPC Wallet Port');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('rpc', 'https', 'false', 'bool', 'Enable RPC over SSL');
-INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'maxDifficulty', '500000', 'int', 'Maximum difficulty for VarDiff');
-INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'minDifficulty', '100', 'int', 'Minimum difficulty for VarDiff');
+INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'maxDifficulty', '10000000000000', 'int', 'Maximum difficulty for VarDiff');
+INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'minDifficulty', '10000', 'int', 'Minimum difficulty for VarDiff');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'varDiffVariance', '20', 'int', 'Percentage out of the target time that difficulty changes');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('pool', 'varDiffMaxChange', '125', 'int', 'Percentage amount that the difficulty may change');
 INSERT INTO pool.config (module, item, item_value, item_type, Item_desc) VALUES ('payout', 'btcFee', '1.5', 'float', 'Fee charged for auto withdrawl via BTC');
