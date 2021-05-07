@@ -13,7 +13,7 @@ worker - Does regular processing of statistics and sends status e-mails for non-
 ```
 API listens on port 8001, remoteShare listens on 8000
 
-moneroocean.stream (The reference implementation) uses the following setup:  
+moneromine.co (The reference implementation) uses the following setup:  
 * https://moneromine.co is hosted on its own server, as the main website is a static frontend
 * https://api.moneromine.co hosts api, remoteShare, longRunner, pool_stats, payments, blockManager, worker, as these must all be hosted with access to the same LMDB database.
 
